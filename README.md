@@ -1,52 +1,82 @@
-1. to import pandas:
-	import pandas as pd
-2.to read/load a csv file as data frame:
-	df = pd.read_csv('data/survey_results_public.csv')
-3. if we run this df jupyter will automaticly show us only 20 rows
+**to import pandas:**
 
-4.to get rows and columns number(how many rows and columns our csv file has):
+	import pandas as pd
+	
+**to read/load a csv file as data frame:**
+
+	df = pd.read_csv('data/survey_results_public.csv')
+	
+   * if we run **df** jupyter will automaticly show us only 20 rows
+
+**to get rows and columns number(how many rows and columns our csv file has):**
+	
 	df.shape
-5. to get rows and colums number also with all of the rows and columns data types:
+	
+**to get rows and colums number also with all of the rows and columns data types:**
+	
 	df.info()
-6. To see all 85 columns we can set max_column 85:
+
+**To see all 85 columns we can set max_column 85:**
+	
 	pd.set_option('display.max_columns',85) 
-7. To see all 85 rows we can set max_rows 85:
+	
+**To see all 85 rows we can set max_rows 85:**
+	
 	pd.set_option('display.max_rows',85)
-8. to see first 5 rows:
+	
+**to see first 5 rows:**
+
 	df.head()
-9. to see first 10 rows:
+	
+**to see first 10 rows:**
+
 	df.head(10)
-10. to see last 5 rows:
+	
+**to see last 5 rows:**
+	
 	df.tail()
-11. to see last 10 rows(have to put as argumant):
+	
+**to see last 10 rows(have to put as argumant):**
+	
 	df.tail(10)
 
-12. To turn a dictionary to data frame:
-	df = pd.DataFrame(people)
-	->people is a dictionary
+**To turn a dictionary to data frame:**
+	
 	people={
     		'first':['Chandler','Joey','Ross'],
     		'last':['Bing','Trivianni','Geller'],
     		'email':['chandler@gmail.com','joey@gmail.com','ross@gmail.com']
 	}
-13. To retrive individual column from data frame:
-	df['email'] or df.get('email') or df.email
-	->it will return all email as a series object
-	->series is like a list of data..
-	->but it's a little bit different
-	->it's basically a single column of rows
-14.To retrive or get multiple column at same time:
-	df[['first','last']]
-	-> remember have to passed those key as a list
-	-> multiple column can't be a series object it's only a filtered data frame
-	-> because series object must have to be a single column
+	
+	df = pd.DataFrame(people)
+ 
+**To retrive individual column from data frame:**
 
-15. To see only column's key:
+	df['email'] or df.get('email') or df.email
+  * it will return all email as a series object
+  * series is like a list of data..
+  * but it's a little bit different
+  * it's basically a single column of rows
+  
+**To retrive or get multiple column at same time:**
+	
+	df[['first','last']]
+	
+* remember have to passed those key as a list
+* multiple column can't be a series object it's only a filtered data frame
+* because series object must have to be a single column
+
+**To see only column's key:**
+	
 	df.columns
-16. TO get rows:
+	
+**TO get rows:**
+
 	df.iloc[0]
-	->it will return a series which contains the value of first row of data.
-	->iloc = integer location:
+	
+* it will return a series which contains the value of first row of data.
+* iloc = integer location:
+
 17. To get a range of rows:
 	df.iloc[[0,1]]
 	->it will return a data frame with two(0,1) rows
