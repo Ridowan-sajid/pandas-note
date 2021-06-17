@@ -1,5 +1,3 @@
-# pandas-note
-
 1. to import pandas:
 	import pandas as pd
 2.to read/load a csv file as data frame:
@@ -209,18 +207,145 @@
 	df.drop(index=6,inplace=True)
 
 61. Delete a row with filtering:
-	filt=df['last'] == 'Hanks'
+	filt=(df['last'] == 'Hanks')
 	df=df.drop(index=df[filt].index)
 
+#Sorting:
+
+62. To sort data by a index column name:
+	df.sort_values(by='last',inplace=True)
+	->last is a column.
+63. To sort by descending order:
+	df.sort_values(by='last',ascending=False,inplace=True)	
+64. To sort data by multiple index column name:
+	df.sort_values(by=['last','first'],ascending=False,inplace=True)
+	->after sorting by 'last' if there are multiple value with same name
+	->then it will go for 'first'
+65. To sort multiple column with multiple type(Ascending/Descending):
+	df.sort_values(by=['last','first'],ascending=[False,True],inplace=True)
+66. After sorting the row index will remain same To change them in ascending order:
+	df=df.sort_index()
+67. To see sorted value of any column:
+	df['last'].sort_values()
+
+68.To see first 10 largest value:
+	df['ConvertedComp'].nlargest(10)
+	-> only 'ConvertedComp' value will be printed.
+69. To see whole data frame with sorting first largest 10 value:
+	df.nlargest(10,'ConvertedComp')
+	->10 could be change as any number.	
+70.To see first 10 smallestvalue:
+	df['ConvertedComp'].nsmallest(10)
+	-> only 'ConvertedComp' value will be printed.
+71. To see whole data frame with sorting in 'ConvertedComp' first smallest 10 value:
+	df.nsmallest(10,'ConvertedComp')
+	->10 could be change in any number.	
+
+#Aggregate function:
+72. To get mediam value from 'ConvertedComp' column:
+	df['ConvertedComp'].median()
+73. To get medium value from whole data frame's numaric type:
+	df.median()
+74. To get overview of different state from a data frame:
+	df.describe()
+	-> we will get a row a of 50% that means the medium value
+75. To get overview of a single column:
+	df['ConvertedComp'].describe()
+76. To count how many value is exist whom it will count:
+	df['ConvertedComp'].count()
+77. To count how many is unique:
+	df['Hobbyist'].value_counts()
+78.To get counted value from unique data in percentage:
+	df['SocialMedia'].value_counts(normalize=True)
+	->it will return 0.170...something like that.
+	->that means 17%
+
+#GROUP BY - split our object->applying a function -> combining those results:
+
+79. To get all country by group:
+	country_grp = df.groupby('Country')
+80. To get most used social media by country group:
+	country_grp['SocialMedia'].value_counts()
+	->instead of value_counts() we can use any type of aggregate function
+81. To get an individual country from a country group:
+	country_grp['SocialMedia'].value_counts().loc['Bangladesh']
+82. To get a group:
+	country_grp.get_group('United States')
+83. To use multiple aggregate function:
+	country_grp['ConvertedComp'].agg(['median','mean'])
+84. We can use sum() in boolean type too:
+	filt=df['Country'] == 'India'
+	df.loc[filt]['LanguageWorkedWith'].str.contains('Python').sum()
+85. In group By we can't use str method directly(bcz groupby return a series object) to use str method we have to use apply():
+	country_grp['LanguageWorkedWith'].apply(lambda x : x.str.contains('Python'))
+86. To concat multiple data frame :
+	python_df=pd.concat([country_respondents,country_know_python],axis='columns',sort=False)
+	->defaultly axis='rows'
+
+#Handling Missing values:
+
+87. to drop rows based on missing value:
+	df.dropna(axis='index',how='any',inplace=True) OR df.dropna(inplace=True)
+	->how='any' means if any of the value from data frame in None or NaN 
+	->(axis='index') that row will be deleted.
+	->if we set axis='columns' then column will be deleted instead of row
+  	->if we use how='all' instead of 'any' columns or rows all value have to be None or NaNs 
+88. To drop more specific:
+	example I don't need first_name or last_name but i need the email,,
+	So, if first_name or last_name = None or NaN i don't want to delete that row/column untill i have 
+	his/her email.if email is None or NaN then we can delete that row or column,,,
+	
+	df.dropna(axis='index', how='any', subset=['email'],inplace=True)
+	->it will delete based on 'email'.
+	-> so, we can say that our how='' won't do anything
+
+	If we want to do something like we want email or last_name.
+	then we can use
+	df.dropna(axis='index', how='all', subset=['email','last'],inplace=True)
+	-> in here all is required 
+	-> because all will checked email and first 
+	-> but any will check either email or first 
+89. In data frame some NA or Missing value are exist to drop them:
+	df.replace('NA',np.nan,inplace=True)
+	df.replace('Missing', np.nan, inplace=True)
+	df.dropna()
+	->can do replace in any specific column
+
+90. To get True false based on None or NaN:
+	df.isna()
+	->it will give us True if that value is None or NaN
+
+91. To replace those NaN or None value to numarical or string type:
+	df.fillna(0)
+	-> instead of zero we can writhe down any string value too.
+92. To see data type:
+	df.dtypes
+	-> in our people data frame there is an age column ,
+	-> but age column is not in numaric ,it was in string type
+	-> to use this age we have to cast those string to float.
+
+93. To cast String to float:
+	df['age'] = df['age'].astype(float)
+	-> now we can use aggregate function too,,,
+94. To cast whole data frame into float(if possible):
+	df = df.astype(float)
+	-> can do with specific column
+95.To see all unique value from a column:
+	df['YearsCode'].unique()
+
+96. To replace multiple value into NaN in csv file:
+	na_vals = ['NA','Missing']
+	df = pd.read_csv('data/survey_results_public.csv',index_col='Respondent',na_values=na_vals)
 
 
 
 
 
 
-#df['Hobbyist'].value_counts()
+
+
 #df['name'] = this is working with columns
-#df.loc[0] = this is working with rows
+#df.loc[0] = this is working with rows and boolean too
 
 
 
