@@ -1,81 +1,120 @@
 
 # Basic
-1. to import pandas:
-	import pandas as pd
-2.to read/load a csv file as data frame:
-	df = pd.read_csv('data/survey_results_public.csv')
-	-> we can put any csv link too.
-3. if we run this df jupyter will automaticly show us only 20 rows
+**To import pandas:**
 
-4.to get rows and columns number(how many rows and columns our csv file has):
+	import pandas as pd
+	
+**To read/load a csv file as data frame:**
+
+	df = pd.read_csv('data/survey_results_public.csv')
+  * we can put any csv link too.
+	
+**If we run this df jupyter will automaticly show us only 20 rows**
+
+**to get rows and columns number(how many rows and columns our csv file has):**
+
 	df.shape
-5. to get rows and colums number also with all of the rows and columns data types:
+	
+**To get rows and colums number also with all of the rows and columns data types:**
+
 	df.info()
-6. To see all 85 columns we can set max_column 85:
+	
+**To see all 85 columns we can set max_column 85:**
+
 	pd.set_option('display.max_columns',85) 
-7. To see all 85 rows we can set max_rows 85:
+	
+**To see all 85 rows we can set max_rows 85:**
+
 	pd.set_option('display.max_rows',85)
-8. to see first 5 rows:
+	
+**To see first 5 rows**
+
 	df.head()
-9. to see first 10 rows:
+	
+**To see first 10 rows:**
+
 	df.head(10)
-10. to see last 5 rows:
+  * can see maximum 50 value with head and tail
+ 
+**To see last 5 rows:**
+
 	df.tail()
-11. to see last 10 rows(have to put as argumant):
+
+**To see last 10 rows(have to put as argumant):**
+
 	df.tail(10)
 
 # To retrive data 
 
-12. To turn a dictionary to data frame:
-	df = pd.DataFrame(people)
-	->people is a dictionary
+**To turn a dictionary to data frame:**
+
 	people={
     		'first':['Chandler','Joey','Ross'],
     		'last':['Bing','Trivianni','Geller'],
     		'email':['chandler@gmail.com','joey@gmail.com','ross@gmail.com']
 	}
-13. To retrive individual column from data frame:
-	df['email'] or df.get('email') or df.email
-	->it will return all email as a series object
-	->series is like a list of data..
-	->but it's a little bit different
-	->it's basically a single column of rows
-14.To retrive or get multiple column at same time:
-	df[['first','last']]
-	-> remember have to passed those key as a list
-	-> multiple column can't be a series object it's only a filtered data frame
-	-> because series object must have to be a single column
-
-15. To see only column's key:
-	df.columns
-16. TO get rows:
-	df.iloc[0]
-	->it will return a series which contains the value of first row of data.
-	->iloc = integer location:
-17. To get a range of rows:
-	df.iloc[[0,1]]
-	->it will return a data frame with two(0,1) rows
-18. To get specific value from a data frame:
-	df.iloc[[0,1],2]
-	[0,1] = first and second rows
-	2 = third number column
-19. To search with level(can retrive rows wise too):
-	df.loc[0,'email']
-
-	df.loc[[0,1],['email','first']]
-	->from 0 and 1 rows
-	->we will retrive email and first columns
-	->we can't passed columns key's name in iloc.	
- -->>To retrive multiple rows or multiple columns we have to pass those argument as list.
-
-20. To use slice in loc:
-	df.loc[0:3,'Hobbyist']
-	->0 to 3 rows will be captured. 3 is inclusive 
-        
-	df.loc[0:3,'Hobbyist':'Employment']
 	
-	->also slice can be used in key's.
-	->'Employment' is inclusive
+	df = pd.DataFrame(people)
+	
+	
+**To retrive individual column from data frame:**
+
+	df['email'] or df.get('email') or df.email
+	
+   * it will return all email as a series object
+   * series is like a list of data..
+   * but it's a little bit different
+   * it's basically a single column of rows
+   
+**To retrive or get multiple column at same time:**
+
+	df[['first','last']]
+ * remember have to passed those key as a list
+ * multiple column can't be a series object it's only a filtered data frame
+ * because series object must have to be a single column
+
+**To see only column's index:**
+
+	df.columns
+	
+**TO get rows:**
+
+	df.iloc[0]
+	
+ * it will return a series which contains the value of first row of data.
+ * iloc = integer location
+ 
+**To get a range of rows:**
+
+	df.iloc[[0,1]]
+	
+ * it will return a data frame with two(0,1) rows
+ 
+**To get specific value from a data frame:**
+
+	df.iloc[[0,1],2]
+	
+* [0,1] = first and second rows
+* 2 = third number column
+
+**To search with level(can retrive rows wise too):**
+
+	df.loc[0,'email']
+	df.loc[[0,1],['email','first']]
+ * from 0 and 1 rows
+ * we will retrive email and first columns
+ * we can't passed columns key's name in iloc.	
+ * To retrive multiple rows or multiple columns we have to pass those argument as list.
+
+**To use slice in loc:**
+
+	df.loc[0:3,'Hobbyist']
+  * 0 to 3 rows will be captured. 3 is inclusive 
+        
+	     df.loc[0:3,'Hobbyist':'Employment']
+	
+   * also slice can be used in key's.
+   * 'Employment' is inclusive
 
 # index
 21. In data frame they gives us an extra column which is contained some range of number
