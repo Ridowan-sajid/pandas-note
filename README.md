@@ -1,82 +1,57 @@
-**to import pandas:**
 
+# Basic
+1. to import pandas:
 	import pandas as pd
-	
-**to read/load a csv file as data frame:**
-
+2.to read/load a csv file as data frame:
 	df = pd.read_csv('data/survey_results_public.csv')
-	
-   * if we run **df** jupyter will automaticly show us only 20 rows
+	-> we can put any csv link too.
+3. if we run this df jupyter will automaticly show us only 20 rows
 
-**to get rows and columns number(how many rows and columns our csv file has):**
-	
+4.to get rows and columns number(how many rows and columns our csv file has):
 	df.shape
-	
-**to get rows and colums number also with all of the rows and columns data types:**
-	
+5. to get rows and colums number also with all of the rows and columns data types:
 	df.info()
-
-**To see all 85 columns we can set max_column 85:**
-	
+6. To see all 85 columns we can set max_column 85:
 	pd.set_option('display.max_columns',85) 
-	
-**To see all 85 rows we can set max_rows 85:**
-	
+7. To see all 85 rows we can set max_rows 85:
 	pd.set_option('display.max_rows',85)
-	
-**to see first 5 rows:**
-
+8. to see first 5 rows:
 	df.head()
-	
-**to see first 10 rows:**
-
+9. to see first 10 rows:
 	df.head(10)
-	
-**to see last 5 rows:**
-	
+10. to see last 5 rows:
 	df.tail()
-	
-**to see last 10 rows(have to put as argumant):**
-	
+11. to see last 10 rows(have to put as argumant):
 	df.tail(10)
 
-**To turn a dictionary to data frame:**
-	
+# To retrive data 
+
+12. To turn a dictionary to data frame:
+	df = pd.DataFrame(people)
+	->people is a dictionary
 	people={
     		'first':['Chandler','Joey','Ross'],
     		'last':['Bing','Trivianni','Geller'],
     		'email':['chandler@gmail.com','joey@gmail.com','ross@gmail.com']
 	}
-	
-	df = pd.DataFrame(people)
- 
-**To retrive individual column from data frame:**
-
+13. To retrive individual column from data frame:
 	df['email'] or df.get('email') or df.email
-  * it will return all email as a series object
-  * series is like a list of data..
-  * but it's a little bit different
-  * it's basically a single column of rows
-  
-**To retrive or get multiple column at same time:**
-	
+	->it will return all email as a series object
+	->series is like a list of data..
+	->but it's a little bit different
+	->it's basically a single column of rows
+14.To retrive or get multiple column at same time:
 	df[['first','last']]
-	
-* remember have to passed those key as a list
-* multiple column can't be a series object it's only a filtered data frame
-* because series object must have to be a single column
+	-> remember have to passed those key as a list
+	-> multiple column can't be a series object it's only a filtered data frame
+	-> because series object must have to be a single column
 
-**To see only column's key:**
-	
+15. To see only column's key:
 	df.columns
-	
-**TO get rows:**
-
+16. TO get rows:
 	df.iloc[0]
-	
-* it will return a series which contains the value of first row of data.
-* iloc = integer location:
-
+	->it will return a series which contains the value of first row of data.
+	->iloc = integer location:
 17. To get a range of rows:
 	df.iloc[[0,1]]
 	->it will return a data frame with two(0,1) rows
@@ -366,6 +341,105 @@
 96. To replace multiple value into NaN in csv file:
 	na_vals = ['NA','Missing']
 	df = pd.read_csv('data/survey_results_public.csv',index_col='Respondent',na_values=na_vals)
+
+
+#Date Time:
+
+97. To convert a string datetime to pandas datetime format:
+	df['Date'] = pd.to_datetime(df['Date'],format='%Y-%m-%d %I-%p')
+	->format have to be as same as like data frame's date.
+	->format='' is may different for every data frame  
+	-> we convert to date format bcz now we can behave with them like date not like string
+	-> If pandas can read our date format we don't need to add fromat.
+
+
+98. To see day of the week from an individual datetime:
+	df.loc[0,'Date'].day_name()
+
+99. To convert a string datetime to pandas datetime format when loading the csv file:
+	d_parser = lambda x: datetime.strptime(x, '%Y-%m-%d %I-%p')
+	df = pd.read_csv('data/ETH_1h.csv',parse_dates = ['Date'], date_parser = d_parser)
+	-> if pandas can read that datetime format we don't need to use 'date_parser'.
+
+100. To see whole column's day of the week at once:
+	df['Date'].dt.day_name()
+101. To create a day of the week column:
+	df['DayOfWeek'] = df['Date'].dt.day_name()
+
+102. To see the most earliest date:
+	df['Date'].min()
+103. To see the most newest date:
+	df['Date'].max()
+104. We can subtract date:
+	df['Date'].max()-df['Date'].min()
+
+105. To filter out a range of date with string format date:
+	filt = (df['Date'] >= '2019') & (df['Date'] < '2020')
+	df.loc[filt]
+
+106. To filter out a range of date with panda's datetime format:
+	filt = (df['Date'] >= pd.to_datetime('2019-01-01')) & (df['Date'] < pd.to_datetime('2020-01-01'))
+	df.loc[filt]
+107. Slicing range of date:
+	df['2020-01':'2020-02']
+	-> our date time is our index
+108. To get an individiual column's value:
+	df['High'].resample('D').max()
+	-> from 'High' column we got maximum value of each Day.
+	-> to get each day we write down 'D' as a Day format.
+	-> can do resample for whole data frame (df.resample('W') W=Week)
+109. To show this High as graph with the help of matplotlib:
+	highs=df['High'].resample('D').max()
+	%matplotlib inline
+	highs.plot()
+110. To use so many aggregate function at once with different columns:
+	df.resample('W').agg({'Close':'mean','High':'max','Low':'min','Volume':'sum'})
+	-> Key = column name
+	-> value = aggregate function
+
+#Read and write data
+
+111. To write data frame as csv:
+	filt = (df['Country'] == 'Bangladesh')
+	bd_df = df.loc[filt]
+	bd_df.to_csv('data/bd_survey.csv')
+112. To write data as tsv:
+	bd_df.to_csv('data/bd_survey.tsv' , sep='\t')
+	->tab seperated value
+#Excel :
+113. To install required module:
+	pip install xlwt openpyxl xlrd
+
+114. To write data as Excel:
+	bd_df.to_excel('data/bd_survey.xlsx')
+
+115. To read an excel file:
+	test = pd.read_excel('data/bd_survey.xlsx',index_col='Respondent')
+116. To write data as json file like dictionary:
+	bd_df.to_json('data/bd_survey.json')
+117. To write data as json like list type:
+	bd_df.to_json('data/bd_survey2.json' , orient='records' , lines=True)
+	-> other='records' means it will create that json as list type.
+	-> lines=True means it will create new line after every line
+118. To read json (dictionary type) file:
+	test = pd.read_json('data/bd_survey.json')
+119. To read json (list type) file:
+	test = pd.read_json('data/bd_survey2.json', orient='records', lines=True)
+120. To write data as sql:
+     =>First import:
+	from sqlalchemy import create_engine
+	import psycopg2
+	
+	engine = create_engine('postgresql://postgres:788881137@localhost:5432/test')
+	-> username:postgres, pass:788881137, post:5432, tablename: test
+	bd_df.to_sql('test_table',engine)
+
+121. To replace existing table:
+	bd_df.to_sql('test_table',engine, if_exists='replace')
+122. To reas sql :
+	sql_df = pd.read_sql('test_table', engine, index_col='Respondent')
+123. To read sql with query:
+	sql_df = pd.read_sql('SELECT * FROM test_table', engine)
 
 
 
