@@ -374,209 +374,322 @@
 	
 * 10 could be change as any number.
 	
-**To see first 10 smallestvalue:**
+**To see first 10 smallest value:**
 
 	df['ConvertedComp'].nsmallest(10)
 	
 * only 'ConvertedComp' value will be printed.
 
-71. To see whole data frame with sorting in 'ConvertedComp' first smallest 10 value:
+**To see whole data frame with sorting in 'ConvertedComp' first smallest 10 value:**
+
 	df.nsmallest(10,'ConvertedComp')
-	->10 could be change in any number.	
+	
+* 10 could be change in any number.	
 
-#Aggregate function:
-72. To get mediam value from 'ConvertedComp' column:
+# Aggregate function:
+
+**To get mediam value from 'ConvertedComp' column:**
+
 	df['ConvertedComp'].median()
-73. To get medium value from whole data frame's numaric type:
+	
+**To get medium value from whole data frame's numaric type:**
+
 	df.median()
-74. To get overview of different state from a data frame:
+	
+**To get overview of different state from a data frame:**
+
 	df.describe()
-	-> we will get a row a of 50% that means the medium value
-75. To get overview of a single column:
+	
+* we will get a row a of 50% that means the medium value
+	
+**To get overview of a single column:**
+
 	df['ConvertedComp'].describe()
-76. To count how many value is exist whom it will count:
+	
+**To count how many value is exist whom it will count:**
+
 	df['ConvertedComp'].count()
-77. To count how many is unique:
+	
+**To count how many is unique:**
+
 	df['Hobbyist'].value_counts()
-78.To get counted value from unique data in percentage:
+	
+**To get counted value from unique data in percentage:**
+
 	df['SocialMedia'].value_counts(normalize=True)
-	->it will return 0.170...something like that.
-	->that means 17%
+	
+* it will return 0.170...something like that.
+* that means 17%
 
-#GROUP BY - split our object->applying a function -> combining those results:
+# GROUP BY - split our object->applying a function -> combining those results:
 
-79. To get all country by group:
+**To get all country by group:**
+
 	country_grp = df.groupby('Country')
-80. To get most used social media by country group:
+	
+**To get most used social media by country group:**
+
 	country_grp['SocialMedia'].value_counts()
-	->instead of value_counts() we can use any type of aggregate function
-81. To get an individual country from a country group:
+	
+* instead of value_counts() we can use any type of aggregate function
+	
+**To get an individual country from a country group:**
+
 	country_grp['SocialMedia'].value_counts().loc['Bangladesh']
-82. To get a group:
+	
+**To get a group:**
+
 	country_grp.get_group('United States')
-83. To use multiple aggregate function:
+	
+**To use multiple aggregate function:**
+
 	country_grp['ConvertedComp'].agg(['median','mean'])
-84. We can use sum() in boolean type too:
+	
+**We can use sum() in boolean type too:**
+
 	filt=df['Country'] == 'India'
 	df.loc[filt]['LanguageWorkedWith'].str.contains('Python').sum()
-85. In group By we can't use str method directly(bcz groupby return a series object) to use str method we have to use apply():
+	
+**In group By we can't use str method directly(bcz groupby return a series object) to use str method we have to use apply():**
+	
 	country_grp['LanguageWorkedWith'].apply(lambda x : x.str.contains('Python'))
-86. To concat multiple data frame :
+	
+**To concat multiple data frame :**
+
 	python_df=pd.concat([country_respondents,country_know_python],axis='columns',sort=False)
-	->defaultly axis='rows'
 
-#Handling Missing values:
+* defaultly axis='rows'
 
-87. to drop rows based on missing value:
+# Handling Missing values:
+
+**to drop rows based on missing value:**
+
 	df.dropna(axis='index',how='any',inplace=True) OR df.dropna(inplace=True)
-	->how='any' means if any of the value from data frame in None or NaN 
-	->(axis='index') that row will be deleted.
-	->if we set axis='columns' then column will be deleted instead of row
-  	->if we use how='all' instead of 'any' columns or rows all value have to be None or NaNs 
-88. To drop more specific:
-	example I don't need first_name or last_name but i need the email,,
-	So, if first_name or last_name = None or NaN i don't want to delete that row/column untill i have 
-	his/her email.if email is None or NaN then we can delete that row or column,,,
+	
+* how='any' means if any of the value from data frame in None or NaN 
+* (axis='index') that row will be deleted.
+* if we set axis='columns' then column will be deleted instead of row
+* if we use how='all' instead of 'any' columns or rows all value have to be None or NaNs 
+
+**To drop more specific:**
+
+* example I don't need first_name or last_name but i need the email,,
+* So, if first_name or last_name = None or NaN i don't want to delete that row/column untill i have 
+* his/her email.if email is None or NaN then we can delete that row or column,,,
 	
 	df.dropna(axis='index', how='any', subset=['email'],inplace=True)
-	->it will delete based on 'email'.
-	-> so, we can say that our how='' won't do anything
+	
+* it will delete based on 'email'.
+* so, we can say that our how='' won't do anything
 
-	If we want to do something like we want email or last_name.
-	then we can use
-	df.dropna(axis='index', how='all', subset=['email','last'],inplace=True)
-	-> in here all is required 
-	-> because all will checked email and first 
-	-> but any will check either email or first 
-89. In data frame some NA or Missing value are exist to drop them:
+* If we want to do something like we want email or last_name.
+* then we can use
+
+		df.dropna(axis='index', how='all', subset=['email','last'],inplace=True)
+		
+* in here all is required 
+* because all will checked email and first 
+* but any will check either email or first 
+
+**In data frame some NA or Missing value are exist to drop them:**
+
 	df.replace('NA',np.nan,inplace=True)
 	df.replace('Missing', np.nan, inplace=True)
 	df.dropna()
-	->can do replace in any specific column
+	
+* can do replace in any specific column
 
-90. To get True false based on None or NaN:
+**To get True false based on None or NaN:**
+
 	df.isna()
-	->it will give us True if that value is None or NaN
+	
+* it will give us True if that value is None or NaN
 
-91. To replace those NaN or None value to numarical or string type:
+**To replace those NaN or None value to numarical or string type:**
+
 	df.fillna(0)
-	-> instead of zero we can writhe down any string value too.
-92. To see data type:
-	df.dtypes
-	-> in our people data frame there is an age column ,
-	-> but age column is not in numaric ,it was in string type
-	-> to use this age we have to cast those string to float.
+	
+* instead of zero we can writhe down any string value too.
 
-93. To cast String to float:
+**To see data type:**
+
+	df.dtypes
+	
+* in our people data frame there is an age column ,
+* but age column is not in numaric ,it was in string type
+* to use this age we have to cast those string to float.
+
+**To cast String to float:**
+
 	df['age'] = df['age'].astype(float)
-	-> now we can use aggregate function too,,,
-94. To cast whole data frame into float(if possible):
+	
+* now we can use aggregate function too
+	
+**To cast whole data frame into float(if possible):**
+
 	df = df.astype(float)
-	-> can do with specific column
-95.To see all unique value from a column:
+	
+* can do with specific column
+	
+**To see all unique value from a column:**
+
 	df['YearsCode'].unique()
 
-96. To replace multiple value into NaN in csv file:
+**To replace multiple value into NaN in csv file:**
+
 	na_vals = ['NA','Missing']
 	df = pd.read_csv('data/survey_results_public.csv',index_col='Respondent',na_values=na_vals)
 
 
-#Date Time:
+# Date Time:
 
-97. To convert a string datetime to pandas datetime format:
+**To convert a string datetime to pandas datetime format:**
+
 	df['Date'] = pd.to_datetime(df['Date'],format='%Y-%m-%d %I-%p')
-	->format have to be as same as like data frame's date.
-	->format='' is may different for every data frame  
-	-> we convert to date format bcz now we can behave with them like date not like string
-	-> If pandas can read our date format we don't need to add fromat.
+	
+* format have to be as same as like data frame's date.
+* format='' is may different for every data frame  
+* we convert to date format bcz now we can behave with them like date not like string
+* If pandas can read our date format we don't need to add fromat.
 
 
-98. To see day of the week from an individual datetime:
+**To see day of the week from an individual datetime:**
+
 	df.loc[0,'Date'].day_name()
 
-99. To convert a string datetime to pandas datetime format when loading the csv file:
+**To convert a string datetime to pandas datetime format when loading the csv file:**
+
 	d_parser = lambda x: datetime.strptime(x, '%Y-%m-%d %I-%p')
 	df = pd.read_csv('data/ETH_1h.csv',parse_dates = ['Date'], date_parser = d_parser)
-	-> if pandas can read that datetime format we don't need to use 'date_parser'.
 
-100. To see whole column's day of the week at once:
+* if pandas can read that datetime format we don't need to use 'date_parser'.
+
+**To see whole column's day of the week at once:**
+
 	df['Date'].dt.day_name()
-101. To create a day of the week column:
+	
+**To create a day of the week column:**
+
 	df['DayOfWeek'] = df['Date'].dt.day_name()
 
-102. To see the most earliest date:
+**To see the most earliest date:**
+
 	df['Date'].min()
-103. To see the most newest date:
+	
+**To see the most newest date:**
+
 	df['Date'].max()
-104. We can subtract date:
+	
+**We can subtract date:**
+
 	df['Date'].max()-df['Date'].min()
 
-105. To filter out a range of date with string format date:
+**To filter out a range of date with string format date:**
+
 	filt = (df['Date'] >= '2019') & (df['Date'] < '2020')
 	df.loc[filt]
 
-106. To filter out a range of date with panda's datetime format:
+**To filter out a range of date with panda's datetime format:**
+
 	filt = (df['Date'] >= pd.to_datetime('2019-01-01')) & (df['Date'] < pd.to_datetime('2020-01-01'))
 	df.loc[filt]
-107. Slicing range of date:
+	
+**Slicing range of date:**
+
 	df['2020-01':'2020-02']
-	-> our date time is our index
-108. To get an individiual column's value:
+	
+* our date time is our index
+
+**To get an individiual column's value:**
+
 	df['High'].resample('D').max()
-	-> from 'High' column we got maximum value of each Day.
-	-> to get each day we write down 'D' as a Day format.
-	-> can do resample for whole data frame (df.resample('W') W=Week)
-109. To show this High as graph with the help of matplotlib:
+	
+* from 'High' column we got maximum value of each Day.
+* to get each day we write down 'D' as a Day format.
+* can do resample for whole data frame (df.resample('W') W=Week)
+	
+**To show this High as graph with the help of matplotlib:**
+
 	highs=df['High'].resample('D').max()
 	%matplotlib inline
 	highs.plot()
-110. To use so many aggregate function at once with different columns:
+	
+**To use so many aggregate function at once with different columns:**
+
 	df.resample('W').agg({'Close':'mean','High':'max','Low':'min','Volume':'sum'})
-	-> Key = column name
-	-> value = aggregate function
 
-#Read and write data
+* Key = column name
+* value = aggregate function
 
-111. To write data frame as csv:
+# Read and write data
+
+**To write data frame as csv:**
+
 	filt = (df['Country'] == 'Bangladesh')
 	bd_df = df.loc[filt]
 	bd_df.to_csv('data/bd_survey.csv')
-112. To write data as tsv:
+	
+**To write data as tsv:**
+
 	bd_df.to_csv('data/bd_survey.tsv' , sep='\t')
-	->tab seperated value
-#Excel :
-113. To install required module:
+
+* tab seperated value
+
+# Excel :
+**To install required module:**
+	
 	pip install xlwt openpyxl xlrd
 
-114. To write data as Excel:
+**To write data as Excel:**
+
 	bd_df.to_excel('data/bd_survey.xlsx')
 
-115. To read an excel file:
+**To read an excel file:**
+
 	test = pd.read_excel('data/bd_survey.xlsx',index_col='Respondent')
-116. To write data as json file like dictionary:
+	
+**To write data as json file like dictionary:**
+
 	bd_df.to_json('data/bd_survey.json')
-117. To write data as json like list type:
+	
+**To write data as json like list type:**
+
 	bd_df.to_json('data/bd_survey2.json' , orient='records' , lines=True)
-	-> other='records' means it will create that json as list type.
-	-> lines=True means it will create new line after every line
-118. To read json (dictionary type) file:
+	
+* other='records' means it will create that json as list type.
+* lines=True means it will create new line after every line
+
+**To read json (dictionary type) file:**
+
 	test = pd.read_json('data/bd_survey.json')
-119. To read json (list type) file:
+	
+**To read json (list type) file:**
+
 	test = pd.read_json('data/bd_survey2.json', orient='records', lines=True)
-120. To write data as sql:
-     =>First import:
+	
+**To write data as sql:**
+
+   * First import:
+   
 	from sqlalchemy import create_engine
 	import psycopg2
 	
 	engine = create_engine('postgresql://postgres:788881137@localhost:5432/test')
-	-> username:postgres, pass:788881137, post:5432, tablename: test
+	
+* username:postgres, pass:788881137, post:5432, tablename: test
+	
 	bd_df.to_sql('test_table',engine)
 
-121. To replace existing table:
+**To replace existing table:**
+
 	bd_df.to_sql('test_table',engine, if_exists='replace')
-122. To reas sql :
+	
+**To reas sql :**
+
 	sql_df = pd.read_sql('test_table', engine, index_col='Respondent')
-123. To read sql with query:
+	
+**To read sql with query:**
+
 	sql_df = pd.read_sql('SELECT * FROM test_table', engine)
 
 
@@ -586,8 +699,8 @@
 
 
 
-#df['name'] = this is working with columns
-#df.loc[0] = this is working with rows and boolean too
+# df['name'] = this is working with columns
+# df.loc[0] = this is working with rows and boolean too
 
 
 
