@@ -159,7 +159,7 @@
 
 	schema_df.sort_index(inplace=True)
 
-**To filter data:**
+# To filter data
 
 	df['last'] == 'Bing'
 	
